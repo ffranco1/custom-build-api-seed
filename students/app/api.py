@@ -46,6 +46,16 @@ def get_students():
 def get_student(id):
     return jsonify(Student.query.get_or_404(id).export_data())
 
+
+@app.route('/students/<int:id>', methods=['DELETE'])
+def delete_student(id):
+    user1 = Student.query.get_or_404(id).export_data
+    db.session.delete(user1)
+    db.session.commit()
+    return jsonify({})
+    
+
+
 @app.route('/students/', methods=['POST'])
 def new_student():
     student = Student()
@@ -66,3 +76,5 @@ def edit_student(id):
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=True)
+
+
