@@ -20,12 +20,12 @@ class ValidationError(ValueError):
 class Student(db.Model):
     __tablename__ = 'students'
     id = db.Column(db.Integer, primary_key=True)
-    score = db.Column(db.Integer)
+    score = db.Column(db.Integer) # integer so that i can query by asc/desc order
     title = db.Column(db.String(500))
     author = db.Column(db.String(500))
-    ups = db.Column(db.String(500))
-    downs = db.Column(db.String(500))
-    comments = db.Column(db.String(500))
+    ups = db.Column(db.Integer) # integer so that i can query by asc/desc order
+    downs = db.Column(db.Integer) # integer so that i can query by asc/desc order
+    comments = db.Column(db.Integer) # integer so that i can query by asc/desc order
     link = db.Column(db.String(500))
 
     def get_url(self):
@@ -79,6 +79,42 @@ def getfavoritepost():
     myquery = Student.query.order_by(Student.score.desc()).first()
     return jsonify(myquery.export_data())
 
+@app.route('/students/top10best', methods=['GET'])
+def getbestpost():
+    myquery = Student.query.order_by(Student.score.desc()).limit(10)
+    allbestpost = [] # list 
+    for student in myquery: 
+        allbestpost.append(student.export_data())
+    return jsonify({'allbestpost': allbestpost})
+
+@app.route('/students/top10worst', methods=['GET'])
+def getworstpost():
+    myquery = Student.query.order_by(Student.score.asc()).limit(10)
+    allworstpost = [] # list
+    for student in myquery:
+        allworstpost.append(student.export_data())
+    return jsonify({'allworstpost':allworstpost})
+
+@app.route('/students/mostcommented', methods=['GET'])
+def getmostcommented():
+    myquery = Student.query.order_by(Student.comments.desc()).first()
+    return jsonify(myquery.export_data())
+
+@app.route('/students/mostdowns', methods=['GET'])
+def getmostdowns():
+    myquery = Student.query.order_by(Student.downs.desc()).limit(10)
+    mostdowns = []
+    for students in myquery:
+        mostdowns.append(students.export_data())
+    return jsonify({'mostdowns':mostdowns})
+
+@app.route('/students/mostups', methods=['GET'])
+def getmostups():
+    myquery = Student.query.order_by(Student.ups.desc()).limit(10)
+    mostups = []
+    for students in myquery:
+        mostups.append(students.export_data())
+    return jsonify({'mostups':mostups})    
     
 
 @app.route('/students/franco')
