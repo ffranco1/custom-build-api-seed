@@ -5,3 +5,10 @@ venv
 .idea
 
 students/data.sqlite
+storedata.sh
+parse.txt
+parse.sh
+jsonConverter.sh
+json.txt
+data.sql
+Marvel.csv
