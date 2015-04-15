@@ -119,8 +119,8 @@ def getmostups():
 
 @app.route('/students/franco')
 def index():
-    print ("this me debugging\n")
-    return "whats up francisco\n"
+    print ("this me debugging")
+    return "whats up francisco"
 
 @app.route('/students/', methods=['POST'])
 def new_student():
